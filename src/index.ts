@@ -1,11 +1,11 @@
 import { getInput, setOutput } from '@actions/core'
 import { context } from '@actions/github'
 
-const github_token = getInput('github_token') ?? process.env.GITHUB_TOKEN
-const repository = getInput('repository') ?? `${context.repo?.owner}/${context.repo?.repo}`
-const run_id = getInput('run_id') ?? context.runId
-const job_name = getInput('job_name') ?? context.job
-const per_page = getInput('per_page') ?? 100
+const github_token = getInput('github_token') || process.env.GITHUB_TOKEN
+const repository = getInput('repository') || `${context.repo?.owner}/${context.repo?.repo}`
+const run_id = getInput('run_id') || context.runId
+const job_name = getInput('job_name') || context.job
+const per_page = getInput('per_page') || 100
 
 console.log('Using inputs:', {
   github_token,
