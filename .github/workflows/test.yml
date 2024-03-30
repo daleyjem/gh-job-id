@@ -12,11 +12,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Run our action
         id: my_action
-        uses: ./action.yml
+        uses: ./
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           job_name: "manual-check"
