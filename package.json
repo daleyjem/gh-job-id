@@ -1,0 +1,25 @@
+{
+  "name": "gh-job-id",
+  "version": "1.0.0",
+  "description": "GitHub Action to fetch the current workflow run's job_id",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "esbuild ./src/index.ts --bundle --platform=node --outfile=./dist/index.js --minify"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daleyjem/gh-job-id.git"
+  },
+  "author": "Jeremy Daley",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/daleyjem/gh-job-id/issues"
+  },
+  "homepage": "https://github.com/daleyjem/gh-job-id#readme",
+  "dependencies": {
+    "@actions/core": "^1.10.1",
+    "@actions/github": "^6.0.0",
+    "@types/node": "^20.12.2",
+    "esbuild": "^0.20.2"
+  }
+}

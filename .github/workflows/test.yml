@@ -1,0 +1,25 @@
+name: Verifications
+
+on:
+  push:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+jobs:
+  manual-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run our action
+        id: my_action
+        uses: ../action.yml
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          job_name: "manual-check"
+
+      - name: Output our action
+        run: echo ${{ steps.my_action.outputs.job_id }} - ${{ steps.my_action.outputs.html_url }}

@@ -1,0 +1,31 @@
+name: "Fetch GitHub job_id"
+description: "GitHub Action to fetch the current workflow run's job_id"
+inputs:
+  github_token:
+    description: "GITHUB_TOKEN to use GitHub API v3"
+    required: true
+  job_name:
+    description: "job_name of tartget workflow jobs"
+    required: true
+  repository:
+    description: "target GitHub repository"
+    required: false
+  run_id:
+    description: "run_id of target workflow run"
+    required: false
+  per_page:
+    description: "Results per page (max 100) of target workflow run"
+    required: false
+outputs:
+  job_id:
+    description: "job_id of target workflow jobs"
+  html_url:
+    description: "html_url of target workflow jobs"
+
+branding:
+  icon: "link"
+  color: "blue"
+
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
