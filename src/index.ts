@@ -8,14 +8,14 @@ const job_name = getInput('job_name') ?? context.job
 const per_page = getInput('per_page') ?? 100
 
 async function getJobInfo() {
-  const GITHUB_API = `/repos/${repository || process.env.GITHUB_REPOSITORY}/actions/runs/${run_id || process.env.GITHUB_RUN_ID}/jobs`
+  const githubApi = `/repos/${repository || process.env.GITHUB_REPOSITORY}/actions/runs/${run_id || process.env.GITHUB_RUN_ID}/jobs`
   const headers = {
     'Authorization': `Bearer ${github_token}`,
     'Accept': 'application/vnd.github+json',
     'X-GitHub-Api-Version': '2022-11-28'
   }
   const queryParams = `per_page=${per_page || 30}`
-  const url = `${process.env.GITHUB_BASEURL}${GITHUB_API}?${queryParams}`
+  const url = `${context.apiUrl}${githubApi}?${queryParams}`
 
   const response = await fetch(url, { method: 'GET', headers })
   if (!response.ok) {
