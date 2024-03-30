@@ -7,7 +7,15 @@ const run_id = getInput('run_id') ?? context.runId
 const job_name = getInput('job_name') ?? context.job
 const per_page = getInput('per_page') ?? 100
 
-async function getJobInfo() {
+console.log('Using inputs:', {
+  github_token,
+  repository,
+  run_id,
+  job_name,
+  per_page
+})
+
+const getJobInfo = async () => {
   const githubApi = `/repos/${repository || process.env.GITHUB_REPOSITORY}/actions/runs/${run_id || process.env.GITHUB_RUN_ID}/jobs`
   const headers = {
     'Authorization': `Bearer ${github_token}`,
