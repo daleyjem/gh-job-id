@@ -1,44 +1,33 @@
 import { getInput, setOutput } from '@actions/core'
-import { context } from '@actions/github'
+import { context, getOctokit } from '@actions/github'
 
 const github_token = getInput('github_token') || process.env.GITHUB_TOKEN
-const repository = getInput('repository') || `${context.repo?.owner}/${context.repo?.repo}`
-const run_id = getInput('run_id') || context.runId
+const owner = getInput('owner') || context.repo.owner
+const repo = getInput('repo') || context.repo.repo
+const run_id = Number(getInput('run_id') || context.runId)
 const job_name = getInput('job_name') || context.job
-const per_page = getInput('per_page') || 100
 
 console.log('Using inputs:', {
-  github_token,
-  repository,
+  repo,
   run_id,
   job_name,
-  per_page
 })
 
+if (!github_token) throw new Error('No github token provided')
+
+const octokit = getOctokit(github_token)
+
 const getJobInfo = async () => {
-  const githubApi = `/repos/${repository || process.env.GITHUB_REPOSITORY}/actions/runs/${run_id || process.env.GITHUB_RUN_ID}/jobs`
-  const headers = {
-    'Authorization': `Bearer ${github_token}`,
-    'Accept': 'application/vnd.github+json',
-    'X-GitHub-Api-Version': '2022-11-28'
-  }
-  const queryParams = `per_page=${per_page || 30}`
-  const url = `${context.apiUrl}${githubApi}?${queryParams}`
+  const jobs = await octokit.paginate(octokit.rest.actions.listJobsForWorkflowRun, {
+    run_id,
+    owner,
+    repo,
+  }).catch(reason => {
+    console.log(`Failed to fetch job info.`)
+    throw new Error(reason)
+  })
 
-  const response = await fetch(url, { method: 'GET', headers })
-  if (!response.ok) {
-    throw new Error(`Failed to fetch job info: ${response.status} ${response.statusText}`)
-  }
-
-  const jobInfo = await response.json()
-
-  if (jobInfo.message && jobInfo.message.includes("Resource not accessible by integration")) {
-    console.error("Resource not accessible by integration")
-    process.exit(1)
-  }
-
-  const total_count = jobInfo.total_count
-  const job = jobInfo.jobs.find(job => job.name === job_name)
+  const job = jobs.find(job => job.name === job_name)
 
   if (!job) {
     console.error(`No job found with name ${job_name}`)
@@ -47,11 +36,6 @@ const getJobInfo = async () => {
 
   const job_id = job.id
   const html_url = job.html_url
-
-  if (!job_id) {
-    console.error(`parse error, job_id is ${job_id} and total_count is ${total_count}. 'job_name' or 'per_page' might be wrong.`)
-    process.exit(1)
-  }
 
   console.log(`job_id=${job_id}`)
   console.log(`html_url=${html_url}`)
