@@ -7,14 +7,14 @@ inputs:
   job_name:
     description: "job_name of tartget workflow jobs"
     required: true
-  repository:
+  owner:
+    description: "target GitHub owner/org"
+    required: false
+  repo:
     description: "target GitHub repository"
     required: false
   run_id:
     description: "run_id of target workflow run"
-    required: false
-  per_page:
-    description: "Results per page (max 100) of target workflow run"
     required: false
 outputs:
   job_id:
