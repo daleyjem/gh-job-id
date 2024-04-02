@@ -1,7 +1,7 @@
 name: Verifications
 
 on:
-  pull_request:
+gec  pull_request:
     branches:
       - main
 
@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Node
-        uses: actions/setup-node
+        uses: actions/setup-node@v4
         with: 
           node-version: 20
           cache: 'npm'
