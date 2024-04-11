@@ -19,7 +19,7 @@
   "homepage": "https://github.com/daleyjem/gh-job-id#readme",
   "devDependencies": {
     "@actions/core": "^1.10.1",
-    "@actions/github": "^6.0.0"
+    "@actions/github": "^6.0.0",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.12.2",
     "esbuild": "^0.20.2"
