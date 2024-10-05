@@ -30,3 +30,48 @@ jobs:
       - name: Output our action
         run: echo ${{ steps.my_action.outputs.job_id }} - ${{ steps.my_action.outputs.html_url }}
 ```
+
+## Using inside of a reusable workflow
+
+When using a reusable workflow:
+
+```yaml
+name: Parent Workflow
+on:
+  pull_request:
+    branches:
+      - main
+jobs:
+	main_job:
+		uses: ./.github/workflows/reusable.yml
+```
+
+Github creates the reusable workflow's job name to be a concatenation with the parent workflow's job name (e.g. `<main workflow job> / <reusable workflow job>`), so be sure to specify the `job_name` input accordingly:
+
+```yaml
+name: Reusable Workflow
+on:
+  workflow_call:
+jobs:
+  reusable_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run our action
+        id: my_action
+        uses: ./
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          job_name: "main_job / reusable_job"
+
+      - name: Output our action
+        run: echo ${{ steps.my_action.outputs.job_id }} - ${{ steps.my_action.outputs.html_url }}
+```
+
+
+
+
+
+
