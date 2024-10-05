@@ -19,14 +19,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        
+
       - name: Get job info
         id: my_action
         uses: daleyjem/gh-job-id@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           job_name: "manual-check"
-          
+
       - name: Output our action
         run: echo ${{ steps.my_action.outputs.job_id }} - ${{ steps.my_action.outputs.html_url }}
 ```
@@ -42,8 +42,8 @@ on:
     branches:
       - main
 jobs:
-	main_job:
-		uses: ./.github/workflows/reusable.yml
+  main_job:
+    uses: ./.github/workflows/reusable.yml
 ```
 
 Github creates the reusable workflow's job name to be a concatenation with the parent workflow's job name (e.g. `<main workflow job> / <reusable workflow job>`), so be sure to specify the `job_name` input accordingly:
@@ -69,9 +69,3 @@ jobs:
       - name: Output our action
         run: echo ${{ steps.my_action.outputs.job_id }} - ${{ steps.my_action.outputs.html_url }}
 ```
-
-
-
-
-
-
