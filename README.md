@@ -61,7 +61,7 @@ jobs:
 
       - name: Run our action
         id: my_action
-        uses: ./
+        uses: daleyjem/gh-job-id@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           job_name: "main_job / reusable_job"
